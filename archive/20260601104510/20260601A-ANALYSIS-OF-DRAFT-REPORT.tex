@@ -1,0 +1,497 @@
+\documentclass[11pt]{article}
+
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\usepackage[a4paper, landscape, margin=2cm]{geometry}
+\usepackage{longtable}
+\usepackage{array}
+\setlength{\extrarowheight}{2pt}
+\setlength{\parindent}{0pt}
+
+\title{AI Analysis of Draft Report}
+\author{David Ewing (82171165)}
+\date{1 June 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\begin{longtable}{|p{\dimexpr\linewidth-2\tabcolsep-2\arrayrulewidth\relax}|}
+\hline
+\centering\textbf{SENTENCES} \\[2pt]
+\hline
+David Ewing · Student ID: 82171165 DIGI405 Text Analysis · University of Canterbury · May 2026 \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+1 Problem Statement \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This project examines how well an automated text classifier can reproduce the sentiment labels applied to a large sample of tweets. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The dataset is the Cardiff NLP tweet \_eval sentiment subset --- 45,615 tweets labelled as negative, neutral, or positive by human annotators. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Labelling was conducted as part of the SemEval 2017 Task 4A shared task on sentiment analysis in Twitter (Rosenthal et al., 2017), and the labels are widely used as an NLP benchmark. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+My central question is: how reliably can a text classifier reproduce these labels, and what does classifier performance reveal about the quality and consistency of the annotations? \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This matters because weak classification performance may reflect not just the difficulty of the task but genuine inconsistency in how the labels were assigned. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+A classifier that performs poorly on neutral tweets may be revealing that the boundary between neutral and mildly positive or mildly negative is genuinely ambiguous --- that different annotators drew that line differently. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Put differently, low F1 may be evidence of noisy labels as much as evidence of an inadequate model. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Three sub-questions guide the analysis: \textit{[formula]} Macro average F1 is used as the primary evaluation metric. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The validation split (2,000 tweets) serves as the test set, following the notebook template. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Because the training data is class-imbalanced --- neutral tweets account for roughly 45 random undersampling is applied to reduce all classes to the size of the smallest (7,093 negative tweets), producing a balanced training set of 21,279 examples. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This approach was preferred over oversampling because it avoids synthesising or duplicating examples that may reinforce noisy labels. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Macro F1 therefore averages equally across all three classes, rather than being dominated by the majority class. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This is appropriate because the research question treats all three classes as equally important: a metric that concentrates weight on neutral tweets would obscure precisely the per-class performance differences this analysis is designed to detect. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Per-class precision and recall are also reported. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Accuracy is not used as the primary metric since it rewards over-predicting the majority class. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+2 Dataset \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The dataset is the sentiment subset of the Cardiff NLP tweet \_eval benchmark (Barbieri et al., 2020). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+It was collected from Twitter and annotated through the SemEval 2017 Task 4A competition, where teams competed to classify tweet sentiment. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Labels --- negative, neutral, and positive --- were assigned by crowdsourced annotators, with final labels reflecting majority vote across multiple annotations. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Table 1. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Dataset split sizes and class distribution. \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} Train (raw) \& 45,615 \& 7,093 \& \textit{[formula]}19,800 \& \textit{[formula]}18,700 Train (after undersampling) \& 21,279 \& 7,093 \& 7,093 \& 7,093 Validation / Test \& 2,000 \& 312 \& 869 \& 819 Test (held out) \& 12,284 \& --- \& --- \& --- After applying random undersampling (random \_state=82171165) to balance the training classes, the training set is reduced to 21,279 tweets --- 7,093 per class. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The validation split (2,000 tweets) is used as the evaluation set. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The test split (12,284 tweets) is held out and not used in this report. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Exact per-class counts at each stage of processing are shown in notebook §2.5. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The class distribution in the validation set is unbalanced: 312 negative, 869 neutral, and 819 positive tweets. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This asymmetry --- far fewer negative examples than neutral or positive --- means per-class results need careful interpretation. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Poor performance on negative tweets may partly reflect fewer test examples as well as weaker training signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Tweets are short, informal, and noisy: hashtags, @-mentions, URLs, slang, emoji, and abbreviations are common. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+They are also highly context-dependent --- the same words can carry different sentiment depending on the event being discussed or who is being addressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+These properties make sentiment classification in Twitter data intrinsically harder than in product reviews or news text. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+3 Model \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Two classifiers are evaluated: logistic regression and a shallow decision tree. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Both use the same scikit-learn pipeline (notebook section 3), fitted to the balanced training set and evaluated on the validation split. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The pipeline has four steps. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+First, a TextCleaner component strips whitespace. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Second, a SpacyPreprocessor tokenises each tweet using the en \_core \_web \_sm spaCy model and caches the results in an SQLite feature store (assignment-sentiment.sqlite). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Third, a FeatureUnion assembles the feature matrix. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+In this initial run the only active feature block is a TokensVectorizer: unigram token counts for the top 100 most frequent tokens by document frequency, after removing stop words and punctuation, with lowercasing applied. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Fourth, the feature matrix is passed to the classifier. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Logistic regression is configured with max \_iter=5000, random \_state=42. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The decision tree uses max \_depth=3, random \_state=42. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The shallow depth restricts the tree to at most seven leaf nodes, forcing selection of only the most discriminating tokens and producing a human-interpretable model. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Both classifiers share identical preprocessing, achieved by calling set \_params(classifier=clf) inside a loop over both configurations. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Dummy-image Figure 1. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Scikit-learn pipeline. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This run uses a minimal, interpretable baseline feature set. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The model plan lists additional feature types to explore in subsequent runs: TF-IDF weighted unigrams with a larger vocabulary, bigrams, VADER sentiment lexicon counts, document-level text statistics (tweet length, punctuation counts), and POS tag sequences. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+A binary task (negative vs positive only) is also planned. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+4 Results \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Tables 2 and 3 show the classification report for logistic regression and decision tree respectively, on the 2,000-tweet validation split. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Figures 2 and 3 show the corresponding confusion matrices. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Figure 4 shows the top LR feature coefficients per class. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Figure 5 shows the decision tree structure. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Table 2. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Logistic Regression --- classification report (unigram counts, top 100 features). \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} negative \& 0.245 \& 0.446 \& 0.316 \& 312 neutral \& 0.517 \& 0.534 \& 0.525 \& 869 positive \& 0.631 \& 0.413 \& 0.499 \& 819 macro avg \& 0.464 \& 0.464 \& 0.447 \& 2000 accuracy \& --- \& --- \& 0.470 \& 2000 Table 3. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Decision Tree (max \_depth=3) --- classification report (unigram counts, top 100 features). \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} negative \& 0.000 \& 0.000 \& 0.000 \& 312 neutral \& 0.454 \& 0.978 \& 0.620 \& 869 positive \& 0.798 \& 0.121 \& 0.210 \& 819 macro avg \& 0.417 \& 0.366 \& 0.277 \& 2000 accuracy \& --- \& --- \& 0.474 \& 2000 Table 4. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Macro F1 comparison: Logistic Regression vs Decision Tree. \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} \& \textit{[formula]} negative \& 0.316 \& 0.000 \& +0.316 neutral \& 0.525 \& 0.620 \& −0.095 positive \& 0.499 \& 0.210 \& +0.289 macro \& 0.447 \& 0.277 \& +0.170 Figure 2. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Logistic Regression --- confusion matrix. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Figure 3. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Decision Tree --- confusion matrix. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Figure 4. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Logistic Regression --- top 20 feature coefficients per class. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Figure 5. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Decision Tree visualisation (max \_depth=3). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+5 Discussion \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+5.1 Overall performance \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The logistic regression baseline achieved a macro F1 of 0.447. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This is below 0.5, a rough reference point for a classifier that handles all three classes with at least some reliability. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The result is consistent with the known difficulty of three-class sentiment classification in tweets: the task is harder than binary sentiment in longer, more formal text, and the class boundaries in Twitter data are inherently fuzzy. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The decision tree achieved a lower macro F1 of 0.277, despite marginally higher accuracy (0.474 vs 0.470). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The accuracy paradox is instructive: the test set contains 869 neutral tweets (43.5 predicts neutral for almost all inputs achieves near-50 producing a very low macro F1. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This confirms that macro F1 is the correct metric for this dataset. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+5.2 Class-level analysis \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The most striking pattern in the LR results is the asymmetry across classes. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Positive tweets achieved the highest F1 (0.499), driven by high precision (0.631) but only moderate recall (0.413): the model is conservative about predicting positive, but when it does it is often right. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Negative tweets achieved the lowest F1 (0.316), with very low precision (0.245) but moderate recall (0.446): the model over-predicts negative, and most tweets predicted as negative were actually neutral or positive. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Neutral sat in the middle (F1=0.525). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The fact that neutral is not the worst-performing class is somewhat surprising. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The conventional view --- supported by the assignment notes and by Kenyon-Dean et al. (2018) --- is that neutral is the hardest class because it lacks distinctive lexical markers. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The LR results do not clearly support this: neutral F1 (0.525) exceeds negative F1 (0.316). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This may be because the neutral class is the largest in the test set (869 examples), giving the model more evaluation signal, or because neutral tweets tend to contain common, non-sentiment-loaded words that are reliably represented in the top-100 unigram vocabulary. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Negative tweets may use more varied and context-dependent language, and the test set has only 312 negative examples --- the fewest of the three classes. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The decision tree result tells a clearer story. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+With max \_depth=3 and 100 unigram count features, the tree predicted neutral for almost all inputs (recall=0.978 for neutral, near-zero for both other classes). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This is consistent with a shallow tree learning a dominant majority-class heuristic --- even though training data was balanced, the learned split rules apparently generalise better for neutral than for the other classes. <SPLIT>5.3 What does this tell us about label quality?<SPLIT> The central question of this project is not simply "how good is the classifier?" but "what does classifier performance tell us about the labels?" The low macro F1 is partly attributable to model limitations --- the feature set is minimal --- but it is also consistent with genuine label noise in the dataset. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The most suggestive evidence comes from the negative class. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Low precision (0.245) means the model is making many false positive predictions for negative sentiment. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+From a labelling perspective: if the model predicts negative based on reasonable lexical cues but the gold label is neutral, this may indicate cases where annotators labelled a borderline tweet as neutral rather than negative. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The SemEval annotation guidelines used neutral as a default for tweets that did not clearly express positive or negative sentiment --- which may have produced a diffuse, underspecified neutral category that overlaps substantially with mild negative expression. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Kenyon-Dean et al. (2018) argue that sentiment classification in tweets is "complicated" precisely because sentiment is a property of the author s relationship to the content, not just of the words used. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The same phrase ("not bad at all") may be positive or ironic depending on context. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Unigram count features, which discard word order, negation scope, and context, are poorly equipped to capture these distinctions. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The weak results are therefore expected --- but they also suggest that the hard cases may involve genuine ambiguity that even human annotators would disagree on. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+5.4 Limitations \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+This analysis is preliminary. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Only one feature configuration has been evaluated --- 100 unigram count features --- and no comparison across feature types has been made. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The planned additional experiments (VADER features, binary task, bigrams, text statistics) are not yet complete. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The decision tree result cannot be fully interpreted without examining the tree visualisation (Figure 5, currently a placeholder). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The misclassification analysis in notebook section 4.2 was run but individual tweet examples have not yet been examined in detail. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The binary task experiment (negative vs positive only) is needed to determine whether neutral is primarily responsible for the overall weak performance. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Until this is run, the relative contribution of the neutral class cannot be quantified. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The analysis is also constrained to the validation split. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+The held-out test split (12,284 tweets) has not been used and would provide a more reliable estimate of generalisation performance. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+References \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Barbieri, F., Camacho-Collados, J., Espinosa-Anke, L., \& Neves, L. (2020). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+TweetEval: Unified Benchmark and Comparative Evaluation for Tweet Classification. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+In Findings of the Association for Computational Linguistics: EMNLP 2020 (pp. 1644--1650). https://doi.org/10.18653/v1/2020.findings-emnlp.148 Hutto, C. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+J., \& Gilbert, E. (2014). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+VADER: A Parsimonious Rule-Based Model for Sentiment Analysis of Social Media Text. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+In Proceedings of the Eighth International AAAI Conference on Weblogs and Social Media (pp. 216--225). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Kenyon-Dean, K., Ahmed, E., Bhosale, S., Brooks, B., Laframboise, C., Roper, F., ... \& Singh, S. (2018). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Sentiment Analysis: It s Complicated! \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+In Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (pp. 1886--1895). https://doi.org/10.18653/v1/N18-1171 Rosenthal, S., Farra, N., \& Nakov, P. (2017). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+SemEval-2017 Task 4: Sentiment Analysis in Twitter. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+In Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017) (pp. 502--518). \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+Appendix \\[2pt]
+\hline
+\rule{0pt}{3.5cm} \\
+\hline
+\end{longtable}
+\end{document}

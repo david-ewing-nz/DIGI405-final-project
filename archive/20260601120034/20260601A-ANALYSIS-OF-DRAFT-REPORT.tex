@@ -1,0 +1,1380 @@
+\documentclass[11pt]{article}
+
+\usepackage{fontspec}
+\setmainfont{Georgia}
+\usepackage[a4paper, landscape, margin=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{array}
+\setlength{\extrarowheight}{2pt}
+\setlength{\parindent}{0pt}
+
+\title{AI Analysis of Draft Report}
+\author{David Ewing (82171165)}
+\date{1 June 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\begin{longtable}{|p{0.55\linewidth}|p{0.40\linewidth}|}
+\hline
+\centering\textbf{SENTENCES} & \centering\textbf{AI ANALYSIS} \tabularnewline[2pt]
+\hline
+\endhead
+1 Problem Statement & Section heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This project examines how well an automated text classifier can reproduce the sentiment labels applied to a large sample of tweets. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The dataset is the Cardiff NLP tweet \_eval sentiment subset --- 45,615 tweets labelled as negative, neutral, or positive by human annotators. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Labelling was conducted as part of the SemEval 2017 Task 4A shared task on sentiment analysis in Twitter , and the labels are widely used as an NLP benchmark. & Passive construction (was conducted) --- agent suppressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+My central question is: how reliably can a text classifier reproduce these labels, and what does classifier performance reveal about the quality and consistency of the annotations? & Human signal present but AI patterns also detected. Personally framed question --- human signal. Proleptic qualifier --- result stated as achieved without justification. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This matters because weak classification performance may reflect not just the difficulty of the task but genuine inconsistency in how the labels were assigned. & Passive construction (were assigned) --- agent suppressed. Not just X but Y --- AI symmetric framing. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A classifier that performs poorly on neutral tweets may be revealing that the boundary between neutral and mildly positive or mildly negative is genuinely ambiguous --- that different annotators drew that line differently. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Put differently, low F1 may be evidence of noisy labels as much as evidence of an inadequate model. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Both can be true at once. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Four sub-questions guide the analysis: \textit{[formula]} Annotated datasets are expensive to produce. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+My sense is that once a benchmark is established, it tends to be used repeatedly --- models are compared to each other using the same labels, and the labels themselves are rarely questioned. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If I follow that reasoning, gold-standard labels that contain systematic noise mean every model comparison on that benchmark inherits that noise. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A model that achieves a higher F1 than a competitor may simply be better at reproducing the particular pattern of annotator disagreement baked into the dataset, not better at genuine sentiment classification. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+That is why I think being explicit about label quality matters --- it is a methodological obligation, not just an academic nicety. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I chose macro average F1 as the primary evaluation metric. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The validation split (2,000 tweets) serves as the test set throughout. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Because the training data is class-imbalanced --- neutral tweets account for roughly 45 & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+2 Dataset & Section heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The dataset is the sentiment subset of the Cardiff NLP tweet \_eval benchmark . & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It was collected from Twitter and annotated through the SemEval 2017 Task 4A competition, where teams competed to classify tweet sentiment. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Labels --- negative, neutral, and positive --- were assigned by crowdsourced annotators, with final labels reflecting majority vote across multiple annotations. & Passive construction (were assigned) --- agent suppressed. Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Crowdsourced annotation means individual workers on a platform like Amazon Mechanical Turk are each shown a tweet and asked to assign a label . & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Each tweet typically receives three or more annotations, and the final label is the majority vote. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is efficient, but it carries a hidden cost. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Annotators may disagree. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+On close calls --- a mildly sarcastic tweet, or an expression of resignation that could be read as neutral or mildly negative --- the majority vote will still produce a label, but that label may not reflect genuine consensus. & Double hedge (2 modals) --- uniform uncertainty distribution. Long sentence (39 words) --- tends toward AI information density. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I think this is important context for interpreting classifier performance. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+When a model gets a tweet ``wrong'', I think it is worth asking whether the gold label itself was uncertain. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Sometimes the answer is yes. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+After applying random undersampling (random \_state=82171165) to balance the training classes, the training set is reduced to 21,279 tweets --- 7,093 per class. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The validation split (2,000 tweets) is used as the evaluation set throughout this report. & Passive construction (is used as) --- agent suppressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The test split (12,284 tweets) is held out and not used. & Passive construction (is held out) --- agent suppressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Exact per-class counts at each stage of processing are shown in notebook section 2.5. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The class distribution in the validation set is unbalanced: 312 negative, 869 neutral, and 819 positive tweets. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This matters. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The negative class has fewer than half the examples of positive, and less than 40 A further consequence of the unbalanced test set is that confidence intervals around the per-class estimates differ substantially. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+An F1 estimate based on 312 examples carries wider error bars than one based on 869. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+When I compare negative F1 to neutral F1 and find a gap, I have to be honest about whether that gap is meaningful or within the noise introduced by the smaller sample. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is not a reason to ignore the difference, but it is a reason to interpret it carefully. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Tweets are short, informal, and noisy: hashtags, @-mentions, URLs, slang, emoji, and abbreviations are common. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+They are also highly context-dependent. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The same words can carry different sentiment depending on the event being discussed, who is being addressed, and whether the author is being ironic. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A tweet about a sports loss might use the word ``great'' sarcastically --- I noticed examples like this in my manual preview. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A tweet directed at a celebrity might use ``love'' in a way that is enthusiastic. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+My sense is that these properties make sentiment classification in Twitter data harder than in product reviews or news text, where context is more stable and language use more predictable, though I did not run a direct comparison. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I previewed a random sample of 10 training tweets during the exploratory phase. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Even with human reading, many were genuinely ambiguous. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+One tweet about a concert announced a future event in neutral descriptive language but was labelled positive. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I see this as defensible --- the author clearly approved of the event --- but a strict reading of the text gives no obvious signal. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Another tweet expressed mild frustration using indirect language --- not swearing, not shouting, just a brief complaint --- and was labelled neutral. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I would have called it negative. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+These kinds of borderline cases are unavoidable in Twitter data, and I expect the classifier to struggle on them for the same reasons a careful human reader might pause. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+3 Model & Section heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Two classifiers are evaluated across six feature configurations and two task variants, producing four runs in total. & Passive construction (are evaluated) --- agent suppressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The classifiers are logistic regression and a shallow decision tree. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Both use the same scikit-learn pipeline, fitted to the balanced training set and evaluated on the validation split. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The pipeline is shown in Figure 1. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The pipeline has four fixed steps. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+First, a TextCleaner component normalises whitespace. & Enumerated step --- AI structures methodology as numbered lists. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Second, a SpacyPreprocessor tokenises each tweet using the en \_core \_web \_sm spaCy model and caches results in an SQLite feature store. & Enumerated step --- AI structures methodology as numbered lists. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Third, a FeatureUnion assembles the feature matrix from the active feature blocks. & Enumerated step --- AI structures methodology as numbered lists. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Fourth, the feature matrix is passed to the classifier. & Enumerated step --- AI structures methodology as numbered lists. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This architecture makes it easy to swap feature configurations while holding preprocessing constant. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Logistic regression is configured with max \_iter=5000, random \_state=42. & Passive construction (is configured) --- agent suppressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree uses max \_depth=3, random \_state=42. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The shallow depth restricts the tree to at most seven leaf nodes, which forces it to identify only the most discriminating features and produces a model small enough to visualise and interpret directly. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The choice to constrain the decision tree rather than tune it for performance was deliberate. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A deep tree would almost certainly outperform a tree with three levels. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+But the interpretive goal of this analysis is to understand what features the classifier uses, not to maximise accuracy. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A seven-node tree can be printed, examined, and explained. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The max \_depth=3 setting is a diagnostic tool as much as a classifier. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The cost of this choice in performance terms is real, and I discuss it in Section 5. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+3.1 Feature configurations & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Six feature configurations are tested. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+They are designed to progress from simple token-count representations through to richer, more linguistically informed features, so that each step in complexity can be assessed against the baseline. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Unigrams. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A TokensVectorizer extracts count features for the top 200 most frequent unigram tokens, after removing stop words and punctuation, with lowercasing. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is the simplest possible bag-of-words representation. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It captures nothing about word order, negation, or context. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I expected this to perform poorly, and it does --- but it is still a meaningful baseline because it tells us what a purely lexical, context-free representation can do. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Any result worse than this is a failure in a meaningful sense. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Bigrams. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A TokensVectorizer extracts the top 200 most frequent bigrams. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Bigrams capture some local context --- ``not good'' is different from ``good'' --- but they remain shallow and sensitive to data sparsity. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Twitter language is varied enough that any specific bigram may appear rarely. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A bigram like ``really love'' might appear hundreds of times in the training set, but ``really enjoy'' or ``absolutely love'' might appear only once each. & Double hedge (2 modals) --- uniform uncertainty distribution. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The top-200 constraint means only the most frequent bigrams are captured, and Twitter users are inventive enough that the most frequent bigrams may not be the most sentiment-informative. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Unigrams with POS tags (uni+pos). & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A FeatureUnion combines unigram token counts (top 100 features, scaled) with POS tag sequence features from a POSVectorizer. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The intuition is that grammatical structure may carry sentiment signal that vocabulary alone misses. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Intensifiers, negations, and adjective usage patterns may be partially captured here. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Negation in particular is a known failure mode for bag-of-words models: the word ``not'' changes the sentiment of whatever follows it, but a unigram model treats ``not'' and ``good'' as independent features. & Known limitation formula --- AI background-knowledge phrasing. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+POS tags do not fully solve this, but they add structural information that may help at the margins. & Human signal: Asymmetric uncertainty --- human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Text statistics (textstats). & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A TextstatsTransformer extracts document-level statistics: tweet length, punctuation counts, and similar surface features. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+These are scaled with StandardScaler. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I was curious about this one. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Strongly negative tweets often use more punctuation and exclamation marks. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Very short tweets are often reactive expressions. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Very long tweets may be more analytical and thus closer to neutral. & Formulaic causal connective: thus. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I expected this to perform poorly as a standalone feature but potentially to add value in combination with other features. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The results for textstats are the most diagnostic of any single configuration in terms of revealing what surface-level signals carry and what they miss. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+VADER lexicon (lexicon). & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A LexiconCountVectorizer counts matches against the VADER sentiment lexicon, scaled with StandardScaler. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+VADER was designed specifically for social media sentiment , and it encodes human judgements about which words are positive, negative, and neutral, including common social media expressions, emoticons, and slang. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is probably the most directly relevant feature set for this task. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I expected it to perform well. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The key question is whether the lexicon covers enough of the actual vocabulary in the tweet \_eval dataset, which was collected later than the original VADER development set. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Embeddings. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A Model2VecEmbedder generates dense vector representations of each tweet using a pre-trained embedding model. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Embeddings capture semantic similarity in a way that sparse count features cannot. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Two tweets that use different words to express the same sentiment should produce similar embedding vectors. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Whether this generalises well in a short-text, noisy-language domain is an open question. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+My understanding is that pre-trained embeddings reflect the distributional statistics of the corpus they were trained on. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If that corpus is general-purpose text rather than social media, the embeddings may not reliably represent informal abbreviated Twitter language. & Proleptic qualifier --- result stated as achieved without justification. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is the feature type whose results I found most interesting to interpret, and I think it is the most theoretically rich. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+3.2 Task variants & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The 3-class task (negative, neutral, positive) is the primary task. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The binary task (negative vs positive only, with neutral tweets excluded) is run as a diagnostic. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+My instinct was to start with the simpler binary task and then ask what happens when neutral is added back. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The motivation is simple: if classifier performance improves substantially on the binary task, it suggests that the difficulty of the 3-class problem is largely concentrated at the boundary between neutral and the other two classes. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If performance does not improve much, the problem lies elsewhere. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is directly relevant to sub-question 4. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The binary task uses a separate, independently undersampled training and test split. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The binary training set contains 14,186 tweets (7,093 per class), and the binary test set contains 1,131 tweets. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+4 Results & Section heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The results are organised into four runs: RUN 1 (3-class × logistic regression), RUN 2 (3-class × decision tree), RUN 3 (binary × logistic regression), and RUN 4 (binary × decision tree). & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+For each run, classification reports and confusion matrices are shown for all six feature configurations. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A summary table and a 3-class vs binary comparison table are provided at the end of this section. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+4.1 RUN 1: 3-class classification, logistic regression & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The logistic regression results across six feature configurations are shown in the classification reports and confusion matrices for RUN 1. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The unigram baseline achieves a macro F1 of 0.447. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is the reference point for the other configurations. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I was initially surprised that simple word counts could get this far, but on reflection it makes sense: words like ``love'', ``hate'', ``great'', and ``terrible'' appear in the top 200 tokens and carry obvious sentiment signals. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The classifier is doing something real. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The macro F1 would be 0.333 for a random three-class guesser. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+We are well above that. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+What the unigram model cannot do is handle negation, context, or ambiguous vocabulary. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Words that appear frequently in positive and negative contexts alike --- ``day'', ``time'', ``people'' --- will receive weights close to zero and contribute little. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The model will make its predictions based on the small set of vocabulary items that are reliably associated with one class. & Proleptic qualifier --- result stated as achieved without justification. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is fine as a baseline, but it leaves a lot on the table. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The VADER lexicon configuration is the most directly designed for this task. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The lexicon encodes human judgements about sentiment-bearing words and includes social media specific expressions not found in general vocabulary lists. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I expected it to outperform the unigram baseline, and the results should be examined closely when assessing which feature type captures the most useful signal. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Whether it does outperform unigrams across the board, or only for certain classes, is itself informative: a gain on negative precision, for example, would suggest the lexicon is particularly helpful for identifying strong negative language. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Embeddings represent the most semantically rich representation. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+They should, in theory, capture meaning beyond surface vocabulary. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Whether they outperform simpler features in a noisy short-text domain is an empirical question, and the answer from this dataset is informative about the limits of general-purpose semantic representations. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+4.2 RUN 2: 3-class classification, decision tree & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree results are dramatically weaker than logistic regression across most feature configurations. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+With unigram features and max \_depth=3, the tree achieves a macro F1 of 0.277 --- barely above the 0.333 floor of random chance, and not by much. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It does this by predicting neutral for the majority of inputs --- recall for neutral approaches 1.0, while recall for negative and positive is near zero. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is consistent with a shallow tree learning that ``predict the most common class'' is the least-bad rule when only three splits are available. & Passive construction (is consistent with) --- agent suppressed. Consistent with: AI preferred hedge for aligning with prior work. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree is not simply a weaker classifier: it is a qualitatively different kind of failure. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Logistic regression distributes its errors more evenly. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree collapses to a near-trivial heuristic. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The three-node depth constraint is the most likely cause, but it may also reflect that the feature representations being tested do not contain strongly discriminating single-variable split points. & Double hedge (2 modals) --- uniform uncertainty distribution. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Sentiment is not a simple threshold on a single word count. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Accuracy for the decision tree (0.474) is nearly identical to logistic regression (0.470). & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is the textbook demonstration of why accuracy is the wrong metric for imbalanced multi-class problems. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A model that overwhelmingly predicts the most common class will achieve near-majority-class accuracy while being useless for the minority classes. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Macro F1 catches this; accuracy does not. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It is a useful lesson. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I found running both classifiers side by side on this dataset more instructive than any textbook example could be. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+4.3 RUN 3 and RUN 4: binary task & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The binary task removes neutral tweets and asks the classifier to distinguish negative from positive only. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If the 3-class difficulty is concentrated at the neutral boundary, performance should improve substantially here. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I expected a significant gain. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The comparison between 3-class and binary macro F1 for each feature configuration is shown in the gain table at the end of Section 4. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A large positive gain for most configurations would confirm that neutral is the primary source of difficulty. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A small or inconsistent gain would suggest that the negative--positive boundary is also problematic, possibly because of label inconsistency at both boundaries. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree performs differently in the binary setting. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Without the neutral class as a majority-class anchor, the tree must find a split that distinguishes negative from positive. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Whether this produces a more useful model --- one where recall is more balanced between the two classes --- or whether it simply shifts which class gets over-predicted depends on the feature distributions. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is one of the results I was most interested to see. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5 Discussion & Section heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5.1 Overall performance & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The logistic regression baseline achieved a macro F1 of 0.447 on the 3-class task. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is below 0.5. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It is also, frankly, about where I expected it to land given the feature set and the known difficulty of the task. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Below 0.5 is not a good score, but it is not a meaningless one either. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The model is doing something. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It is not random. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+That matters. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+For a dataset with known annotation noise and a notoriously hard neutral class, a macro F1 in the 0.4--0.5 range is a plausible baseline. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A random classifier on a balanced three-class problem would achieve macro F1 of 0.333. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A model that always predicts the majority class on a class-imbalanced problem would have high recall for one class and near-zero for the others, yielding a macro F1 well below 0.333. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The logistic regression result of 0.447 is comfortably above both of these floors. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The question is not whether the classifier works. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It is why it does not work better, and what that tells us about the data. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree at 0.277 is harder to defend. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The accuracy figure (0.474) is almost identical to logistic regression (0.470), which is the clearest possible illustration of why accuracy is the wrong metric here. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The test set is 43.5 & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5.2 Feature comparison & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The six feature configurations produce different results, and the pattern across them is revealing. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Simple unigram counts establish a baseline --- the floor against which everything else is measured. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Bigrams add local context but face sparsity challenges in short informal text. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The uni+pos combination adds grammatical structure. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Text statistics capture surface properties that may correlate with emotional intensity. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+VADER lexicon features are purpose-built for this task. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Embeddings provide the richest semantic representation, though whether that richness translates into better predictions on short noisy text is not obvious in advance. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I expected the VADER lexicon to be the top performer. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The VADER lexicon was designed specifically for social media text and encodes human judgements about sentiment. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It includes slang, emoticons, and common expressions in ways that a general vocabulary count cannot. demonstrated its effectiveness on Twitter data, and the present task is almost identical in character to the tasks they used for evaluation. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Embeddings capture semantic similarity, which means that synonyms and paraphrases of sentiment expressions should map to similar feature vectors. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+But embeddings trained on general corpora may not fully capture the informal, abbreviated, and context-dependent language of Twitter. & Human signal present but AI patterns also detected. Asymmetric uncertainty --- human signal. Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A tweet like ``can't even rn'' expresses frustration that a general embedding model may not reliably encode as negative. & Proleptic qualifier --- result stated as achieved without justification. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Text statistics deserve comment. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Tweet length, punctuation count, and capitalisation patterns are crude proxies for emotional intensity, but they are real signals. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Very short tweets are often reactive. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+High punctuation density often accompanies strong emotion. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I would expect textstats to perform poorly alone but potentially to add value as a complementary feature when combined with lexical or lexicon features. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Running textstats as an isolated feature configuration is a diagnostic choice: it tells us what surface properties alone can do, which helps set expectations for combined models. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+One thing I found interesting when comparing feature configurations is the consistency of the per-class patterns. & Human signal: First-person voice --- genuine human signal. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+For logistic regression, the ordering negative < positive < neutral in per-class F1 tends to be stable across feature types even though the absolute F1 values vary. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+To me, this suggests the difficulty ordering of the classes is a property of the data, not of any particular feature representation. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The negative class is harder regardless of what features you use. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+That is a data observation, not a modelling one. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5.3 What the binary task reveals & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Sub-question 4 asks whether removing neutral substantially improves performance. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I believe the answer from the binary task results addresses a core concern about label quality: is neutral the main source of difficulty, or is the problem more general? & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If the gain from removing neutral is large and consistent across classifiers and feature types, this supports the hypothesis that the neutral label is underspecified --- that it captures a diffuse middle ground that is genuinely hard to separate from mild negative and mild positive expression. & Long sentence (46 words) --- tends toward AI information density. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This would be consistent with the SemEval annotation process, where neutral was the default label for tweets that did not clearly express a directional sentiment. & Consistent with: AI preferred hedge for aligning with prior work. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If the gain is small, or absent for some configurations, the implication is different. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It would suggest that the negative--positive boundary is also noisy, or that the feature representations are not adequate to capture the distinction even in the absence of the neutral class. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The gain comparison table in Section 4 shows the 3-class and binary macro F1 for each feature and classifier combination, along with the difference. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I find this table more informative than the raw F1 figures in isolation, because it speaks directly to the label quality question rather than just to classifier performance. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A large consistent gain is evidence for the ``neutral is the problem'' hypothesis. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A small or variable gain suggests the difficulty is more distributed. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+There is an additional consideration. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The binary task uses a different, smaller test set --- the original validation set minus all neutral tweets. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A gain in macro F1 from 3-class to binary may partly reflect this change in evaluation set rather than purely a change in task difficulty. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The gain should be interpreted with this in mind, though the direction of effect is unlikely to be reversed by the compositional difference. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5.4 Class-level analysis & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The 3-class LR results show asymmetry across classes. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Positive tweets achieved the highest F1, driven by high precision but only moderate recall: the model is conservative about predicting positive, but when it does it is often right. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Negative tweets achieved the lowest F1, with very low precision and moderate recall: the model over-predicts negative, and most tweets it calls negative were actually neutral or positive. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Neutral sat in the middle. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Neutral is not the worst-performing class. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+That surprised me. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The conventional view --- supported by the course notes and by --- is that neutral is the hardest class because it lacks the distinctive lexical markers that characterise clearly positive or clearly negative sentiment. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The results do not clearly support this. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Neutral F1 exceeds negative F1. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This may be because the neutral class is the largest in the test set, giving the model more evaluation signal. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Or it may be that neutral tweets genuinely cluster around common, non-sentiment-loaded vocabulary that is well represented in the top-200 unigram features. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Negative tweets may use more varied, context-dependent language. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree collapse is a separate phenomenon. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It is not simply that the tree performs poorly on negative and positive. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It performs near-zero on both. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The tree has apparently learned that predicting neutral minimises loss on the training data even after undersampling. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is concerning to me. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It suggests the feature representations do not present a clean split between neutral and the other classes at any single threshold value. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5.5 Label quality evidence & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The central question of this project is not simply how good the classifier is, but what classifier performance tells us about the labels. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The two are not the same thing. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Not even close. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Low macro F1 is consistent with several explanations. & Passive construction (is consistent with) --- agent suppressed. Consistent with: AI preferred hedge for aligning with prior work. \\[2pt]
+\hline
+\textbf{\textit{Active and declarative.}}\vspace{2em} & \\
+\hline
+The feature set may be inadequate. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The classifier may be ill-suited to the task. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The labels may be noisy. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+All three are probably true to some degree here. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+I genuinely cannot tell which dominates. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The negative class stands out. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Low precision means the model is generating many false positive predictions for negative sentiment. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If the model predicts negative based on reasonable lexical cues but the gold label is neutral, this suggests cases where annotators labelled a borderline tweet as neutral rather than negative. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The SemEval annotation guidelines used neutral as the default for tweets that did not clearly express positive or negative sentiment. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This may have produced a diffuse, underspecified neutral category that captures genuine neutrality alongside mild negative expression that annotators were uncertain about. argue that sentiment classification in tweets is complicated precisely because sentiment is a property of the author's relationship to the content, not just of the words used. & Long sentence (49 words) --- tends toward AI information density. \\[2pt]
+\hline
+{\bfseries\itshape The neutral label may have introduced systematic ambiguity in this dataset:
+\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
+  \item the category was designed to capture genuine neutrality alongside mild negative expression;
+  \item annotators were uncertain about tweets that fell between the two;
+  \item sentiment is a property of the author's relationship to content, not just of the words used.
+\end{itemize}}\vspace{2em} & \\
+\hline
+The same phrase --- ``not bad at all'' --- may be positive or ironic depending on context. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Unigram count features, which discard word order, negation scope, and context, are poorly equipped to capture these distinctions. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+But the hard cases may also involve genuine ambiguity that even human annotators would disagree on, and the low classifier performance may be tracking that ambiguity rather than merely reflecting model inadequacy. & Double hedge (3 modals) --- uniform uncertainty distribution. \\[2pt]
+\hline
+{\bfseries\itshape But the hard cases may involve genuine ambiguity, not model failure:
+\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
+  \item even human annotators would disagree on these cases;
+  \item the low classifier performance may be tracking that annotator disagreement;
+  \item rather than merely reflecting model inadequacy.
+\end{itemize}}\vspace{2em} & \\
+\hline
+The low negative precision may be an alignment signal. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The model and the annotators share a rough understanding that certain vocabulary is negative --- the model predicts negative, and in many cases the tweet probably is negative in some sense --- but the annotators labelled it neutral, possibly because the expression was not strong enough to trigger the positive or negative label. & Very long (53 words) --- dense uniform packing typical of AI. \\[2pt]
+\hline
+{\bfseries\itshape The model and the annotators share a rough understanding that certain vocabulary is negative, but their labels diverge:
+\begin{itemize}[leftmargin=*,topsep=2pt,itemsep=1pt,parsep=0pt]
+  \item the model predicts negative, and in many cases the tweet probably is negative in some sense;
+  \item the annotators, however, labelled it neutral;
+  \item possibly because the expression was not strong enough to trigger the positive or negative label.
+\end{itemize}}\vspace{2em} & \\
+\hline
+If we had access to per-annotator votes rather than only the majority-vote outcome, we could test whether these tweets had high disagreement rates. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The absence of that information is a genuine limitation. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5.6 Misclassification analysis & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Notebook section 4.2 produces a systematic breakdown of model predictions by true and predicted class. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Examining the misclassified tweets gives a ground-level view of where the model fails, and why. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Some misclassifications are model failures. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A tweet containing strongly negative language predicted as neutral is likely a case where the relevant tokens fell outside the top-200 vocabulary, or where negation flipped the meaning of otherwise neutral words. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+These are feature engineering problems. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Other misclassifications are more interesting. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+When I looked at tweets predicted as negative but labelled neutral, a recurring pattern emerged: tweets expressing mild dissatisfaction, slight frustration, or low-key complaints --- the kind of expression that sits at the boundary between neutral and negative in everyday language. & Long sentence (41 words) --- tends toward AI information density. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+These are the cases where I would expect human annotators to disagree. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The model is not obviously wrong. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The label may not be clearly right. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+That ambiguity is the point. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Similarly, some tweets predicted as positive but labelled neutral appear to express genuine enthusiasm in informal or restrained language. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The model picks up the positive vocabulary but the gold label reflects an annotator who read the tweet as reporting rather than expressing. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+These borderline cases are exactly what the central research question is about. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The most consistently misclassified tweet types across all feature configurations are those that involve sarcasm, irony, or highly context-dependent expressions. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A tweet like ``great job guys'' directed at a team that just lost can be positive, neutral, or sarcastic. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+No unigram feature set can resolve this. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+No bigram feature set can either. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+These represent a hard ceiling on what surface-form features can achieve. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A human reading the same tweet with knowledge of the context --- which sport, which team, which result --- would resolve the ambiguity immediately. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The classifier has none of that. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It is working only from the words. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+That is a real constraint. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is not a criticism of the approach. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It is the nature of the problem. & Short declarative --- no strong signal either way. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The question is whether the gold-standard labels also required contextual knowledge that crowdsourced annotators did not always have. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+If annotators were shown the tweet in isolation, without the thread context or the event context, they may have defaulted to neutral for tweets they could not confidently label positive or negative. & Passive construction (were shown) --- agent suppressed. Double hedge (2 modals) --- uniform uncertainty distribution. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+That is exactly the kind of label noise that would explain the patterns observed here. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+5.7 Limitations and future directions & Subsection heading --- not a prose sentence. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The analysis has several limitations. & Has several X --- formulaic AI limitations-section opener. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The feature configurations tested here are all applied independently. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+No multi-feature combinations are evaluated. & Passive construction (are evaluated) --- agent suppressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A combined model --- for example, unigrams plus VADER lexicon plus text statistics --- might outperform any single configuration, and the interaction effects between feature types are not captured here. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Combining features is a natural next step and one that the pipeline architecture supports directly through its FeatureUnion design. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The cost of this analysis is missing those interactions; the benefit is a clear additive comparison of what each feature type contributes. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The decision tree hyperparameter choice of max \_depth=3 is interpretable but severely limiting. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A deeper tree might produce substantially better results. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+It would, however, be harder to interpret and more prone to overfitting on a training set of this size. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The shallow constraint is a deliberate trade-off between performance and interpretability that is appropriate for the diagnostic purpose of this analysis. & Passive construction (is appropriate) --- agent suppressed. Appropriate: AI self-validates design choices with this word. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The embeddings used here are from a pre-trained general-purpose model. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Fine-tuning on Twitter data, or using a model pre-trained on social media text, might produce substantially different results. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The generalisability of embedding-based representations to informal short text is a known limitation of off-the-shelf models. & Known limitation formula --- AI background-knowledge phrasing. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+A model like BERTweet, pre-trained on 850 million tweets, would likely produce more useful tweet embeddings than a general-corpus model. & Double hedge (2 modals) --- uniform uncertainty distribution. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The analysis is constrained to the validation split. & Passive construction (is constrained) --- agent suppressed. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The held-out test split (12,284 tweets) has not been used and would provide a more reliable estimate of generalisation performance. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The validation set has only 312 negative examples, which limits the precision of per-class estimates for that class. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The wide confidence intervals around negative F1 are a real limitation, and results for that class should be treated as indicative rather than definitive. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Finally, the crowdsourced annotation process introduces a source of noise that cannot be removed by any classifier, no matter how well-designed. & Enumerated step --- AI structures methodology as numbered lists. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+The gold standard labels represent majority-vote outcomes, not ground truth. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Where annotators disagreed, the label is uncertain, and classifier performance on those cases is not a reliable measure of model quality. & Tripartite parallel list --- AI defaults to exactly three items. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Separating these cases from clearly-labelled examples --- perhaps by analysing inter-annotator agreement scores if available --- would allow a more precise estimate of the irreducible difficulty of the task. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+This is probably the single most valuable extension of the analysis. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Without knowing which labels are contested, we cannot distinguish ``model failure'' from ``genuinely ambiguous tweet''. & No strong AI signal detected; reads as plain informational prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+References & Section heading --- not prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Rosenthal, S., Farra, N., \& Nakov, P. (2017). SemEval-2017 Task 4: Sentiment Analysis in Twitter. In \textit{Proceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017)} (pp.\ 502--518). Association for Computational Linguistics. & Bibliographic reference --- not prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Barbieri, F., Camacho-Collados, J., Espinosa-Anke, L., \& Noves, L. (2020). TweetEval: Unified Benchmark and Comparative Evaluation for Tweet Classification. In \textit{Findings of the Association for Computational Linguistics: EMNLP 2020} (pp.\ 1644--1650). Association for Computational Linguistics. & Bibliographic reference --- not prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Hutto, C.~J., \& Gilbert, E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. In \textit{Proceedings of the Eighth International Conference on Weblogs and Social Media (ICWSM 2014)}. AAAI Press. & Bibliographic reference --- not prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Kenyon-Dean, K., Ahmed, E., Bhosale, S., Brooks, B., Laframboise, C., Roper, F., Singh, S., Cheung, J. C. K., \& Precup, D. (2018). Sentiment Analysis: It's Complicated! In \textit{Proceedings of the 2018 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies} (pp.\ 1886--1895). Association for Computational Linguistics. & Bibliographic reference --- not prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+Nash, C. (2015). Atolls in the ocean---canaries in the mine? Australian journalism contesting climate change impacts in the Pacific. \textit{Pacific Journalism Review}, \textit{21}(1), 79--97. & Bibliographic reference --- not prose. \\[2pt]
+\hline
+\rule{0pt}{3.5cm} & \\
+\hline
+\end{longtable}
+\end{document}
