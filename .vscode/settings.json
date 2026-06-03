@@ -1,0 +1,47 @@
+{
+  "chat.tools.autoApprove": true,
+  "latex-workshop.latex.tools": [
+    {
+      "name": "archive-compile",
+      "command": "D:/Python/python.exe",
+      "args": [
+        "${workspaceFolder}/scripts/archive_tex.py",
+        "%DOCFILE%"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "Archive Compile",
+      "tools": [
+        "archive-compile"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "Archive Compile",
+  "latex-workshop.latex.defaultRecipe": "Archive Compile",
+  "editor.wordBasedSuggestions": "off",
+  "editor.suggest.showWords": false,
+  "editor.inlineSuggest.enabled": false,
+  "editor.suggest.preview": false,
+  "github.copilot.inlineSuggest.enable": false,
+  "github.copilot.enable": {
+    "*": false
+  },
+  "[latex]": {
+    "editor.inlineSuggest.enabled": false,
+    "editor.suggest.preview": false
+  },
+  "python-envs.pythonProjects": [
+    {
+      "path": ".",
+      "envManager": "ms-python.python:venv",
+      "packageManager": "ms-python.python:pip"
+    }
+  ],
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.diagnosticMode": "openFilesOnly",
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportUndefinedVariable": "none"
+  }
+}

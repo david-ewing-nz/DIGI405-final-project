@@ -1,0 +1,20 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Archive Compile",
+			"type": "shell",
+			"command": "D:\\Python\\python.exe",
+			"args": [
+				"D:\\github\\DIGI405-final-project\\scripts\\archive_tex.py",
+				"${file}"
+			],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}
