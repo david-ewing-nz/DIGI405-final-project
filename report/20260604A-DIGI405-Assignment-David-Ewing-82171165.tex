@@ -36,6 +36,19 @@
 
 \maketitle
 
+\section*{How to Run the Submission Package}
+
+This submission is intended to be distributed as a zip archive.
+When unpacking the archive, the top-level folder \texttt{FINAL-PROJECT/} should be kept intact.
+The notebook itself should remain inside \texttt{FINAL-PROJECT/python/*.ipynb} and should be opened from that location rather than being moved elsewhere.
+
+For one-line execution after extraction, run \texttt{python run\_submission.py} from the package root.
+This launcher executes the notebook via Jupyter \texttt{nbconvert}.
+
+This is important because the notebook uses relative paths and expects enough headroom under \texttt{FINAL-PROJECT/} to create and use sibling folders such as \texttt{data/}, \texttt{figs/}, \texttt{results/}, and \texttt{report/}.
+If the folder structure is preserved, no extra setup instructions should be needed by the user.
+After the first run has created these working folders, the notebook can also be run manually in the usual way, provided it remains in the same \texttt{FINAL-PROJECT/python/} location.
+
 
 
 \section*{1 Problem Statement}
