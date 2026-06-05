@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DIGI405 Final Project — David Ewing</title>
+  <style>
+    body { font-family: Georgia, serif; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #222; line-height: 1.6; }
+    h1 { font-size: 1.6em; border-bottom: 1px solid #ccc; padding-bottom: 8px; }
+    h2 { font-size: 1.2em; margin-top: 2em; }
+    pre { background: #f4f4f4; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 0.9em; }
+    code { font-family: Consolas, monospace; background: #f4f4f4; padding: 1px 4px; border-radius: 3px; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #ddd; }
+    th { background: #f4f4f4; }
+    a { color: #0066cc; }
+    .meta { color: #666; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+
+<h1>DIGI405 Final Project</h1>
+<p class="meta">David Ewing &mdash; UC ID 82171165 &mdash; 2026</p>
+
+<h2>Downloads</h2>
+<table>
+  <thead>
+    <tr><th>File</th><th>Description</th><th>Size</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="FINAL-PROJECT-SUBMISSION.zip">FINAL-PROJECT-SUBMISSION.zip</a></td>
+      <td>Complete submission package (notebook, report, HTML)</td>
+      <td>5.2 MB</td>
+    </tr>
+    <tr>
+      <td><a href="David-Ewing-82171165.pdf">David-Ewing-82171165.pdf</a></td>
+      <td>Compiled report (20 pages, includes all confusion matrices)</td>
+      <td>1.6 MB</td>
+    </tr>
+    <tr>
+      <td><a href="David-Ewing-82171165.docx">David-Ewing-82171165.docx</a></td>
+      <td>Word version of report</td>
+      <td>1.8 MB</td>
+    </tr>
+    <tr>
+      <td><a href="David-Ewing-82171165.executed.html">David-Ewing-82171165.executed.html</a></td>
+      <td>Executed notebook as HTML</td>
+      <td>3.8 MB</td>
+    </tr>
+    <tr>
+      <td><a href="David-Ewing-82171165.ipynb">David-Ewing-82171165.ipynb</a></td>
+      <td>Jupyter notebook (outputs cleared)</td>
+      <td>108 KB</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Contents of submission zip</h2>
+<pre>FINAL-PROJECT-SUBMISSION.zip
+├── README.md
+├── FINAL-PROJECT/
+│   ├── python/
+│   │   ├── David-Ewing-82171165.ipynb        (notebook, outputs cleared)
+│   │   └── run_submission.py                 (one-line launcher)
+│   └── REPORT/
+│       ├── David-Ewing-82171165.pdf          (compiled report, 20 pages)
+│       ├── David-Ewing-82171165.docx         (Word version of report)
+│       └── David-Ewing-82171165.executed.html  (executed notebook as HTML)</pre>
+
+<h2>How to unpack and run</h2>
+<p>Extract the archive keeping the top-level folder <code>FINAL-PROJECT/</code> intact:</p>
+<pre>python -m zipfile -e FINAL-PROJECT-SUBMISSION.zip .
+python FINAL-PROJECT/python/run_submission.py</pre>
+<p>The launcher executes the notebook in place using Jupyter <code>nbconvert</code>.</p>
+<p>The notebook uses relative paths and creates sibling folders during execution (<code>data/</code>, <code>figs/</code>, <code>results/</code>). Keep the folder structure intact &mdash; do not move the notebook before running.</p>
+<p>After the first run, the notebook can also be opened and run manually from inside <code>FINAL-PROJECT/python/</code>.</p>
+
+<h2>Notes</h2>
+<ul>
+  <li>Run the two commands above from the directory where you extracted the zip.</li>
+  <li>The REPORT folder contains the written report in PDF and Word formats, and an HTML rendering of the executed notebook.</li>
+</ul>
+
+</body>
+</html>
