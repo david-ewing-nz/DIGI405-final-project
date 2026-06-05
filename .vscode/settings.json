@@ -5,7 +5,7 @@
       "name": "archive-compile",
       "command": "D:/Python/python.exe",
       "args": [
-        "${workspaceFolder}/scripts/archive_tex.py",
+        "D:/github/DIGI405-final-project/scripts/archive_tex.py",
         "%DOCFILE%"
       ]
     }

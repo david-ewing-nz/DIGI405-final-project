@@ -91,6 +91,9 @@ desktop.ini
 CLAUDE.md
 archive/
 figs/
+package-temp*/
+results/runs/
+results/zip/
 
 # Generated notebook artefacts
 *.debug.ipynb

@@ -1,6 +1,7 @@
 # DIGI405-final-project
 
 This submission is intended to be distributed as a zip archive.
+Preferred archive filename: `FINAL-PROJECT-SUBMISSION.zip`.
 
 ## How to unpack and run
 
@@ -22,7 +23,6 @@ The notebook uses relative paths and expects enough headroom inside `FINAL-PROJE
 - `data/`
 - `figs/`
 - `results/`
-- `report/`
 
 If the folder structure is preserved, the user should not need to be given any additional path instructions.
 
@@ -43,4 +43,3 @@ FINAL-PROJECT/
 - Keep the extracted folder structure unchanged.
 - `python run_submission.py` is the intended one-line execution path.
 - After the first run has created the working folders, the notebook can also be run manually in the usual way, provided it remains inside the same `FINAL-PROJECT/python/` location.
-- The report repeats these same setup instructions so the package can be used without separate guidance.

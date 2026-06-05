@@ -10,6 +10,9 @@
 				"${file}"
 			],
 			"isBackground": false,
+			"presentation": {
+				"close": true
+			},
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",

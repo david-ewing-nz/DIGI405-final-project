@@ -1,0 +1,460 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+\usepackage{fontspec}
+
+\setmainfont{Georgia}
+
+\usepackage[round,authoryear]{natbib}
+
+\setlength{\parindent}{0pt}
+
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
+
+
+% Running margin label
+
+\usepackage[useregional]{datetime2}
+
+\usepackage{eso-pic}
+
+\newcommand{\mymarginlabel}{\textcopyright\ 2026 David Ewing dew59@uclive.ac.nz | \DTMnow\ | \jobname.tex}
+
+
+
+\title{Tweet Sentiment Label Quality: A Text Classification Analysis}
+
+\author{David Ewing · Student ID: 82171165}
+
+\date{}
+
+
+
+\begin{document}
+
+\maketitle
+
+\section*{1 Problem Statement}
+
+
+
+This project examines how well an automated text classifier can reproduce the sentiment labels applied to a large sample of tweets. The dataset---Cardiff NLP's tweet\_eval sentiment subset---has 45,615 tweets, each tagged as negative, neutral, or positive. Labelling was conducted as part of the SemEval 2017 Task 4A shared task on sentiment analysis in Twitter \citep{rosenthal2017semeval}, and the labels are widely used as an NLP benchmark.
+
+My central questions: 
+
+\begin{itemize}
+  \item \textit{How reliably is a text classifier able to reproduce the human-assigned sentiment labels?}
+  \item \textit{What does a text classifier's performance tell us about the quality and consistency of the labels?}
+\end{itemize}
+
+This matters because  classification performance may reflect  the difficulty of the task and inconsistency in how the labels were assigned. 
+A classifier that performs  on neutral tweets may be revealing that the boundary 
+between neutral and mildly positive or mildly negative as ambiguous.
+Different annotators may draw the line differently,
+ e.g, low F1 may be evidence of noisy labels. Both may be true at once.
+
+THree smaller questions guide this analysis:
+
+\begin{enumerate}
+
+  \item What kinds of problems are present in the labelling of tweets?
+
+  \item What types of tweets are systematically hard to classify?
+
+  \item What features are most helpful for distinguishing sentiment classes?
+
+  
+\end{enumerate}
+
+Annotated datasets are expensive to produce. 
+My assumption ---
+ once created it is used repeatedly. 
+ Models comparisons will be using the same labels, and not be questioned. 
+ Gold-standard labels  then contain systematic noise. 
+Model comparison to a benchmark then includes this systematic noise. 
+ 
+ A model with a higher F1 than a competitor may then
+ be better at reproducing the particular pattern 
+ of annotator disagreement. 
+ I think being explicit about label quality mattecrs.
+
+Macro average F1 is the most appropriate metric for this task. 
+The validation split has 2,000 tweets. 
+The training data has a class-imbalanced---neutral tweets make up about 45\%. 
+To address this, random undersampling was applied to reduce all classes to the size of the smallest. Every class ends up with 7,093 tweets---so 21,279 in total. 
+I did not want to oversample.
+A model that simply memorises or recombines training examples would be a bad fit.
+The training data already has noisy or unreliable labels. 
+Learning to replicate those examples would just bake the noise in rather than generalise past it
+
+
+
+\section*{2 Dataset}
+
+
+
+The dataset is the sentiment subset of the Cardiff NLP tweet\_eval benchmark \citep{barbieri2020tweeteval}, collected from Twitter and annotated for the SemEval 2017 Task 4A competition. Labels---negative, neutral, and positive---were assigned by crowdsourced annotators, with the final label determined by majority vote. I find myself questioning whether majority vote is really an adequate basis for a gold standard. It is cost-effective, but it introduces noise that is difficult to separate from genuine disagreement.
+
+The labels came from Amazon Mechanical Turk\footnote{Amazon Mechanical Turk (MTurk) is a crowdsourcing platform where requesters post small tasks and workers complete them for small payments, typically a few cents each.}. Workers were paid small amounts to read each tweet and click a sentiment label \citep{rosenthal2017semeval}. No expertise required. Each tweet receives at least three annotations. The majority label stands. Annotators disagree---sometimes the final label reflects little more than a coin toss---and when I look at the data closely, the so-called ``ground truth'' starts to feel less certain:
+
+\begin{itemize}
+
+  \item a mildly sarcastic tweet;
+
+  \item an expression of resignation that could be read as neutral or mildly negative; and
+
+  \item the resulting label may not reflect genuine consensus.
+
+\end{itemize}
+
+  If a model gets a tweet ``wrong'', I can't help but ask if the gold label was ever solid to begin with. A lot of times, it wasn't.
+
+Random undersampling (random\_state=82171165) was applied to balance the training classes, producing 21,279 tweets---7,093 per class. The validation split (2,000 tweets) serves as the evaluation set throughout. The test split (12,284 tweets) is held out and not used. Exact per-class counts at each stage are shown in notebook section 2.5.
+
+The validation set is class-imbalanced: 312 negative, 869 neutral, 819 positive. The negative class has fewer than half the examples of positive, and less than 40\% as many as neutral. The moment I noticed this, I realised that interpreting negative-class results would require care. Poor performance there could reflect label noise, weak feature representations, or simply insufficient test examples---most likely some combination of all three.
+
+A further complication is that confidence intervals for per-class estimates differ substantially. With only 312 negative tweets, any F1 score for that class carries wide error bars compared to the 869 neutral examples. When I observe a gap between negative and neutral F1, I cannot be confident whether it reflects a genuine difference or sampling noise. The difference cannot be ignored, but it should not be overstated.
+
+Tweets are short, informal, and noisy: hashtags, @-mentions, URLs, slang, emoji, and abbreviations are common. They are also highly context-dependent. The same words can carry different sentiments depending on:
+
+\begin{itemize}
+
+  \item the event being discussed;
+
+  \item who is being addressed; and
+
+  \item whether the author is being ironic.
+
+\end{itemize} Tweets about a sports loss sometimes use ``great'' sarcastically---I found several such examples when reviewing the data. Others, directed at celebrities, use ``love'' sincerely. These properties make Twitter sentiment harder to classify reliably than product reviews or news text, where context is more stable and language use more predictable. I did not run a systematic comparison, but the informal evidence from manual review supports this view.
+
+I reviewed a random sample of 10 training tweets during the exploratory phase. Many were genuinely ambiguous even on careful reading. One: a concert announcement in entirely neutral descriptive language, labelled positive. This is defensible---the author clearly approved of the event---but the text alone gives no obvious signal. Another expressed mild frustration indirectly---no swearing, no exclamation, just a brief complaint---and was labelled neutral. I would have called it negative. These borderline cases are prevalent in Twitter data, and I expect the classifier to struggle with them for the same reasons a careful human reader might pause.
+
+
+
+\section*{3 Model}
+
+
+
+Given the pipeline's modular feature assembly and the need for interpretable baselines, I chose to run these two classifiers,
+\begin{itemize}
+  \item logistic regression, and
+  \item a shallow decision tree,
+\end{itemize}
+across six feature setups and two task types. That makes four total runs. Both use the same scikit-learn pipeline, balanced training, and I  check performance on the validation split. Figure 1 in the notebook shows the pipeline.
+
+The pipeline operates as follows:
+\begin{itemize}
+  \item TextCleaner normalises whitespace;
+  \item SpacyPreprocessor tokenises each tweet using the \texttt{en\_core\_web\_sm} spaCy model and caches the results in an SQLite feature store;
+  \item FeatureUnion assembles the feature matrix from the active feature blocks; and
+  \item the classifier receives the matrix and generates predictions.
+\end{itemize}
+Swapping feature configurations is straightforward---preprocessing remains constant across all runs.
+
+The classifiers are configured as follows:
+\begin{itemize}
+  \item logistic regression: \texttt{max\_iter=5000}, \texttt{random\_state=82171165};
+  \item decision tree: \texttt{max\_depth=3}, \texttt{random\_state=82171165}.
+\end{itemize}
+That shallow depth means no more than seven leaf nodes:
+
+\begin{itemize}
+
+  \item it is forced to identify only the most discriminating features;
+
+  \item the resulting model is 
+  small enough to visualise; and
+
+  \item small enough to interpret directly.
+
+\end{itemize}
+
+I made the tree shallow on purpose. I wanted to understand what the model latches onto more than getting the highest score. The \texttt{max\_depth=3} setting is as much a diagnostic tool as a classifier (see Section 5).
+
+
+
+\subsection*{3.1 Feature configurations}
+
+
+
+Six feature configurations are tested. They are designed to progress from simple token-count representations through to richer, more linguistically informed features, so that each step in complexity can be assessed against the baseline.
+
+\textbf{Unigrams.} A TokensVectorizer extracts count features for the top 200 unigrams, after removing stop words and punctuation, with lowercasing applied. This is the simplest possible bag-of-words representation---word order, negation, and context are all discarded. I expected this to perform poorly, and it does to some degree. Still, it establishes the floor: any result worse than this represents a meaningful failure.
+
+\textbf{Bigrams.} The same vectorizer extracts the top 200 most frequent bigrams. Bigrams capture some local context---``not good'' differs from ``good''---but remain shallow and sensitive to data sparsity. Twitter language is highly varied. Most bigrams are rare. A bigram like ``really love'' may appear frequently, but ``really enjoy'' or ``absolutely love'' might appear only once. The top-200 constraint captures only the most common patterns, which are not always the most sentiment-informative.
+
+\textbf{Unigrams with POS tags (uni+pos).} A FeatureUnion combines the top 100 unigram counts (scaled) with POS tag sequence features from a POSVectorizer. The motivation is that grammatical structure may carry sentiment signal that vocabulary alone misses---intensifiers, negations, and adjective usage patterns may be partially captured here. Negation is a known failure mode for bag-of-words models: ``not'' flips the sentiment of whatever follows, but a unigram model treats the two tokens as independent. POS tags do not fully resolve this, but they add structural information that may help at the margins.
+
+\textbf{Text statistics (textstats).} A TextstatsTransformer extracts surface-level features---tweet length, punctuation counts, and similar properties---scaled with StandardScaler. Negative tweets tend to use more punctuation and exclamation marks. Short tweets are often reactive expressions. Longer ones tend toward neutral, more analytical content. I doubted textstats would perform well in isolation but expected it might contribute in combination with other features. Running it alone is a diagnostic choice: it reveals what surface properties can capture independently.
+
+\textbf{VADER lexicon (lexicon).} A LexiconCountVectorizer counts matches against the VADER sentiment lexicon, scaled with StandardScaler. VADER was designed specifically for social media sentiment \citep{hutto2014vader}:
+
+\begin{itemize}
+
+  \item it encodes human judgements about which words are positive, negative, and neutral;
+
+  \item it includes common social media expressions; and
+
+  \item it includes emoticons and slang.
+
+\end{itemize} This is probably the most directly relevant feature set for this task. I expected it to perform well. The key question is whether the lexicon covers enough of the actual vocabulary in the tweet\_eval dataset, which was collected later than the original VADER development set.
+
+\textbf{Embeddings.} A Model2VecEmbedder generates dense vector representations of each tweet using a pre-trained embedding model. Embeddings capture semantic similarity in ways that sparse count features cannot---two tweets expressing the same sentiment in different words should produce similar vectors. Whether this generalises to short, noisy Twitter text is an open question. Pre-trained embeddings reflect the distributional properties of their training corpus; if that corpus is general-purpose text rather than social media, the embeddings may not reliably represent informal, abbreviated Twitter language. Of all the feature types tested, this is the one whose results I found most revealing and theoretically rich.
+
+
+
+\subsection*{3.2 Task variants}
+
+
+
+The 3-class task (negative, neutral, positive) is the primary task. The binary task (negative vs positive only, with neutral tweets excluded) was more of a diagnostic run. My instinct was to start with the simpler binary task and then ask what happens when neutral is added back. Here's the idea: if performance jumps substantially in the binary setting, then the trouble is concentrated at the neutral boundary. If not, the mess is spread somewhere else. That's directly relevant to sub-question 4.
+
+For the binary task, a separate, independently undersampled training and test split was constructed. The binary training set contains 14,186 tweets (7,093 per class), and the binary test set contains 1,131 tweets.
+
+
+
+\section*{4 Results}
+
+
+
+The results are organised into four runs:
+
+\begin{itemize}
+
+  \item RUN 1: 3-class $\times$ logistic regression;
+
+  \item RUN 2: 3-class $\times$ decision tree;
+
+  \item RUN 3: binary $\times$ logistic regression;
+
+  \item RUN 4: binary $\times$ decision tree.
+
+\end{itemize} For each run, classification reports and confusion matrices are shown for all six feature configurations. A summary table and a 3-class vs binary comparison table are provided at the end of this section.
+
+
+
+\subsection*{4.1 RUN 1: 3-class classification, logistic regression}
+
+
+
+The classification reports and confusion matrices for RUN 1 cover all six feature configurations. The unigram baseline achieved a macro F1 of 0.447, which serves as the reference point for all subsequent configurations. I was initially surprised that raw word counts performed this well---words like ``love'', ``hate'', ``great'', and ``terrible'' appear in the top 200 and carry clear sentiment signal. The model is doing something real. For a random three-class guesser, macro F1 would be 0.333. We are well above that.
+
+The unigram model cannot handle negation, context, or words that appear across multiple sentiment classes. Terms like ``day'', ``time'', and ``people'' appear frequently in both positive and negative tweets and receive near-zero weights. The model relies on a small set of vocabulary items reliably associated with a single class. This is acceptable as a baseline, but it leaves a great deal unexplained.
+
+VADER lexicon was built for this job. It bakes in how people judge sentiment words and grabs social-media slang you won't find in old-school vocabulary lists. I expected it to outperform the unigram baseline, and the results are worth looking at closely when assessing which feature type captures the most useful signal. If it only boosts negative precision, maybe it's just good for spotting strong negative language and not much else.
+
+Embeddings are supposed to be the most semantically rich. In theory, they grab meaning beyond just counting words. But do they actually do better on noisy, short tweets? That's a real question, and the answer from this dataset says a lot about the limits of general-purpose semantic representations.
+
+
+
+\subsection*{4.2 RUN 2: 3-class classification, decision tree}
+
+
+
+The decision tree performed substantially worse than logistic regression across most feature configurations. With unigram features and max\_depth=3, its macro F1 was 0.277---barely above the 0.333 floor of random chance. It predominantly predicts neutral for most inputs. Recall for neutral approaches 1.0, while recall for negative and positive is near zero. This is consistent with shallow tree behaviour: ``predict the most common class'' is the least-bad rule when only three splits are available.
+
+But it's not just weaker---it fails in a totally different way. Logistic regression spreads its mistakes around. The tree just gives up and uses a near-trivial heuristic. Three levels deep isn't enough for anything subtle. Maybe the features just don't offer clean single-variable splits, either. Sentiment isn't a simple threshold on one word count.
+
+Accuracy for the tree? 0.474. Logistic regression? 0.470. Practically the same. But this is exactly why accuracy is the wrong metric for imbalanced multi-class problems. You can overwhelmingly predict the majority class and look fine on paper, but you're useless for the others. Macro F1 catches this; accuracy hides it. Running both models side by side on this dataset taught me more than any textbook example.
+
+
+
+\subsection*{4.3 RUN 3 and RUN 4: binary task}
+
+
+
+In the binary task, neutral tweets were excluded and the classifier was asked to distinguish negative from positive only. If all the trouble was really concentrated at the neutral boundary, this should make things a lot easier. I expected a significant gain.
+
+The gain table at the end of Section 4 shows how macro F1 changes from 3-class to binary for each feature configuration. A large positive gain for most configurations would confirm that neutral is the primary source of difficulty. A small or inconsistent gain would suggest that the negative--positive boundary is also problematic, possibly because of label inconsistency at both boundaries.
+
+The decision tree acts differently in the binary setting. Without the neutral class as a majority-class anchor, the tree must find a split that distinguishes negative from positive. This could mean a more useful model---maybe recall balances out more. Or maybe it just shifts which class gets over-predicted. Depends on the features. This is one of the results I was most curious to see.
+
+
+
+\section*{5 Discussion}
+
+
+
+\subsection*{5.1 Overall performance}
+
+
+
+The logistic regression baseline achieved a macro F1 of 0.447 on the 3-class task. Below 0.5, but honestly about where I expected it to land, given the feature set and the known difficulty of the task. A score below 0.5 is not strong, but it is not meaningless either. The model is not performing at chance. That matters. With the level of annotation noise present and the known difficulty of the neutral class, a macro F1 in the 0.4--0.5 range is a credible baseline.
+
+A random classifier on a balanced three-class problem would achieve macro F1 of 0.333. A model that always predicts the majority class gets high recall for one class but near-zero for the rest---macro F1 drops below 0.333. So 0.447 from logistic regression is comfortably above both floors. The real question isn't whether the classifier works at all. It's why it doesn't work better, and what that says about the data.
+
+The decision tree's macro F1 was 0.277---tough to defend. Accuracy? 0.474, basically the same as logistic regression (0.470). That just shows how useless accuracy is here. With 43.5\% neutral in the test set, a model can just say ``neutral'' for every input and score 43.5\% accuracy without learning anything. The tree isn't quite that bad, but it's close. Macro F1 exposes this; accuracy conceals it.
+
+
+
+\subsection*{5.2 Feature comparison}
+
+
+
+The six feature configurations produce different results, and several patterns emerge. Unigrams establish the floor---everything else must beat them. Bigrams introduce some local context, but Twitter text is noisy and varied, so most bigrams are rare. The uni+pos combination adds grammatical structure. Text statistics capture surface properties that may correlate with emotional intensity. VADER lexicon features are purpose-built for this task. Embeddings provide the richest semantic representation, though whether that richness translates into better predictions on short noisy text is not obvious in advance.
+
+I expected the VADER lexicon to be the top performer. It was designed for social media, encodes human judgements about sentiment, and incorporates slang, emoticons, and expressions that general vocabulary counts miss. \citet{hutto2014vader} demonstrated its effectiveness on Twitter data, and this task is almost identical in character to those used for evaluation.
+
+Embeddings capture semantic similarity, so synonyms and paraphrases of sentiment expressions should map to similar feature vectors. But if those embeddings come from generic text rather than social media, they may miss Twitter's informal shorthand. A tweet like ``can't even rn'' expresses frustration that a general-purpose embedding model may not reliably encode as negative.
+
+Text statistics deserve consideration. Tweet length, punctuation count, capitalisation patterns---these are blunt proxies for emotional intensity, but not without signal. Short tweets tend to be reactive expressions. High punctuation density often accompanies strong emotion. I did not expect textstats to perform well in isolation, but running them as a standalone configuration is a diagnostic choice: it reveals what surface-level properties contribute independently and sets a reference point for combination models.
+
+One pattern I noticed when comparing feature configurations: the per-class ordering remains largely stable. In logistic regression, per-class F1 almost always follows negative $<$ positive $<$ neutral, even as the absolute values vary. This suggests the relative difficulty of each class is a property of the data rather than any particular feature representation. The negative class is harder to classify regardless of the features used---that is a data observation, not a modelling one.
+
+
+
+\subsection*{5.3 What the binary task reveals}
+
+
+
+Sub-question 4 asks whether removing neutral substantially improves performance. The binary task results go straight at the heart of label quality: was neutral the real problem, or is the trouble more general?
+
+If dropping neutral produces a large, consistent improvement across classifiers and feature types, this supports the interpretation that the neutral label is underspecified---a diffuse middle region genuinely difficult to separate from mild negative and mild positive expression. That is consistent with what I know about the SemEval annotation process, where neutral was the default label for tweets that did not clearly express a directional sentiment.
+
+But if the gain is small or absent for some configurations, the implication is different: the difficulty extends to the negative--positive boundary as well, or the feature representations are insufficient to capture the distinction even without the neutral class present.
+
+The gain comparison table in Section 4 lays out macro F1 for both setups and the difference. I find this view more informative than raw F1 figures, because it speaks directly to the label quality question rather than just classifier performance. Big, consistent gains point to neutral as the culprit. Small or variable gains suggest the difficulty is more distributed.
+
+One more consideration: the binary task uses a different, smaller test set---the original validation set minus all neutral tweets. Any macro F1 gain might partly reflect this compositional change rather than purely an easier task. I keep that in mind when reading the results, though the direction of effect is unlikely to be reversed by it.
+
+
+
+\subsection*{5.4 Class-level analysis}
+
+
+
+The 3-class LR results are not balanced across classes. Positive tweets got the best F1, with high precision but only middling recall---the model doesn't call many tweets positive, but when it does, it's usually right. negative is the worst performer: low precision, moderate recall. The model tags too many tweets as negative, and most of those turn out to be neutral or positive. Neutral sits in the middle.
+
+I didn't expect neutral to beat negative, but it did. The conventional view---supported by the course notes and by \citet{kenyondean2018sentiment}---is that neutral is the hardest class because it lacks distinctive lexical markers. The results don't clearly support this. Neutral F1 exceeds negative F1. Maybe that's because neutral is the largest group in the test set, giving the model more evaluation signal. Or maybe neutral tweets genuinely cluster around non-sentiment-loaded vocabulary that shows up well in the top-200 unigrams. negative might just be more varied and context-dependent language-wise.
+
+The decision tree collapse is a separate phenomenon. It's not just weak on negative and positive---it's nearly zero on both. The tree has apparently learned that predicting neutral minimises loss on the training data even after undersampling. That bothers me. It suggests the feature representations don't yield a clean split between neutral and the other classes at any single threshold.
+
+
+
+\subsection*{5.5 Label quality evidence}
+
+
+
+The central question of this project is not simply how good the classifier is, but what classifier performance tells us about the labels. The two are not the same thing. Not even close.
+
+A low macro F1 could mean a lot of things. Maybe the features are inadequate. Maybe the model isn't suited to the task. Maybe the labels are noisy. All three are probably true to some degree here. I genuinely cannot tell which dominates.
+
+negative stands out. Low precision means the model generates many false positive predictions for negative sentiment. If the model predicts negative based on reasonable lexical cues but the gold label is neutral, this suggests annotators labelled borderline tweets as neutral rather than negative. The SemEval annotation guidelines used neutral as the default for tweets that did not clearly express positive or negative sentiment. The neutral label may have introduced systematic ambiguity in this dataset \citep{kenyondean2018sentiment}:
+
+\begin{itemize}
+
+  \item the category was designed to capture genuine neutrality alongside mild negative expression;
+
+  \item annotators were uncertain about tweets that fell between the two;
+
+  \item sentiment is a property of the author's relationship to content, not just of the words used.
+
+\end{itemize}
+
+A phrase like ``not bad at all'' could be positive or ironic depending on context. Unigram count features, which discard word order, negation scope, and context, are poorly equipped to capture these distinctions. But sometimes, the trouble isn't the model's fault---it's just genuinely ambiguous:
+
+\begin{itemize}
+
+  \item even human annotators would disagree on these cases;
+
+  \item the low classifier performance may be tracking that annotator disagreement;
+
+  \item rather than merely reflecting model inadequacy.
+
+\end{itemize}
+
+The low negative precision may be an alignment signal. The model and the annotators share a rough understanding that certain vocabulary is negative, but their labels diverge:
+
+\begin{itemize}
+
+  \item the model predicts negative, and in many cases the tweet probably is negative in some sense;
+
+  \item the annotators, however, labelled it neutral;
+
+  \item possibly because the expression was not strong enough to trigger the positive or negative label.
+
+\end{itemize} If I had access to per-annotator votes rather than only the majority-vote outcome, I could check whether these tweets had high disagreement rates. Not having that is a genuine limitation.
+
+
+
+\subsection*{5.6 Misclassification analysis}
+
+
+
+Notebook section 4.2 produces a systematic breakdown of model predictions by true and predicted class. Examining misclassified cases is the most direct way to understand where the model fails and why.
+
+Some misclassifications are model failures. A tweet containing strongly negative language predicted as neutral is likely a case where the relevant tokens fell outside the top-200 vocabulary, or where negation flipped the meaning of otherwise neutral words. These are feature engineering problems.
+
+Other misclassifications are more interesting. When I checked tweets the model called negative but the label was neutral, a recurring pattern came up:
+
+\begin{itemize}
+
+  \item tweets expressing mild dissatisfaction, slight frustration, or low-key complaint;
+
+  \item the kind of expression that sits at the boundary between neutral and negative in everyday language.
+
+\end{itemize} I'd expect human annotators to disagree on these. The model isn't clearly wrong. The label isn't clearly right. That ambiguity is the point.
+
+The same goes for tweets the model calls positive but the label is neutral. Sometimes there's quiet enthusiasm, but the annotator read it as reporting rather than feeling. These borderline cases are exactly what the central research question is about.
+
+Across all feature configurations, the tweets the model consistently misses are the sarcastic, ironic, or highly context-dependent ones. ``Great job guys'' directed at a losing team could mean anything. No unigram or bigram feature set can resolve this. A human with knowledge of the team and the result would get it immediately. The classifier has only the words. That's a hard ceiling for surface-form features, and it's a real constraint.
+
+This is not a criticism of the approach. It is the nature of the problem. Did annotators have the context they needed when labelling? If they saw tweets in isolation---no thread, no event background---they probably defaulted to neutral when unsure. That would explain a lot of the patterns observed here.
+
+
+
+\subsection*{5.7 Limitations and future directions}
+
+
+
+The analysis has several limitations.
+
+The feature configurations tested here are all applied independently. No multi-feature combinations are evaluated. A combined model may outperform any single configuration:
+
+\begin{itemize}
+
+  \item for example, unigrams plus VADER lexicon plus text statistics;
+
+  \item the interaction effects between feature types are not captured here.
+
+\end{itemize} Mixing features is the obvious next step, and the pipeline architecture supports it directly through FeatureUnion. The cost is missing those interactions; the benefit is a clean additive comparison of what each feature type contributes.
+
+Setting max\_depth=3 made the tree interpretable, but substantially limited performance. A deeper tree might achieve higher F1, but at the cost of interpretability and increased overfitting risk on a training set of this size. The shallow constraint was a deliberate choice in service of diagnostic clarity, not just accuracy.
+
+The embeddings used here are from a pre-trained general-purpose model. Fine-tuning on Twitter data, or using something like BERTweet (pre-trained on 850 million tweets), would likely produce more useful tweet embeddings. General models just don't always capture the quirks of short, informal text.
+
+The analysis is constrained to the validation split. The held-out test split (12,284 tweets) has not been used and would provide a more reliable estimate of generalisation performance. The validation set has only 312 negative examples, which limits the precision of per-class estimates for that class. Those wide confidence intervals mean negative F1 should be taken as indicative rather than definitive.
+
+Finally, the crowdsourced annotation process introduces noise that no classifier can remove. The gold standard labels represent majority-vote outcomes, not ground truth. Where annotators disagreed, the label is uncertain, and classifier performance on those cases is not a reliable measure of model quality. If I had inter-annotator agreement scores, I could separate the genuinely hard cases from the clearly labelled ones. Without that, I cannot distinguish ``model failure'' from ``genuinely contested annotation.'' That is probably the single most valuable extension of this analysis.
+
+
+
+\nocite{*}
+
+\bibliographystyle{apalike}
+
+\bibliography{refs}
+
+\appendix
+
+\section{How to Run the Submission Package}
+
+This submission is intended to be distributed as a zip archive.
+When unpacking the archive, the top-level folder \texttt{FINAL-PROJECT/} should be kept intact.
+The notebook itself should remain inside \texttt{FINAL-PROJECT/python/*.ipynb} and should be opened from that location rather than being moved elsewhere.
+
+For one-line execution after extraction, run \texttt{python run\_submission.py} from the package root.
+This launcher executes the notebook via Jupyter \texttt{nbconvert}.
+
+This is important because the notebook uses relative paths and expects enough headroom under \texttt{FINAL-PROJECT/} to create and use sibling folders such as \texttt{data/}, \texttt{figs/}, \texttt{results/}, and \texttt{report/}.
+If the folder structure is preserved, no extra setup instructions should be needed by the user.
+After the first run has created these working folders, the notebook can also be run manually in the usual way, provided it remains in the same \texttt{FINAL-PROJECT/python/} location.
+
+\begin{verbatim}
+  python -m zipfile -e FINAL-PROJECT-SUBMISSION.zip .
+  python run_submission.py
+\end{verbatim}
+
+\end{document}
