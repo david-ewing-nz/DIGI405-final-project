@@ -1,45 +1,38 @@
 # DIGI405-final-project
 
-This submission is intended to be distributed as a zip archive.
-Preferred archive filename: `FINAL-PROJECT-SUBMISSION.zip`.
+This submission is distributed as a zip archive: `FINAL-PROJECT-SUBMISSION.zip`.
+
+## Contents
+
+```text
+FINAL-PROJECT-SUBMISSION.zip
+├── README.md
+├── FINAL-PROJECT/
+│   ├── python/
+│   │   ├── David-Ewing-82171165.ipynb        (notebook, outputs cleared)
+│   │   └── run_submission.py                 (one-line launcher)
+│   └── REPORT/
+│       ├── David-Ewing-82171165.pdf          (compiled report, 20 pages)
+│       ├── David-Ewing-82171165.docx         (Word version of report)
+│       └── David-Ewing-82171165.executed.html  (executed notebook as HTML)
+```
 
 ## How to unpack and run
 
-Extract the archive and keep the top-level folder `FINAL-PROJECT/` intact.
-
-The notebook should remain inside `FINAL-PROJECT/python/*.ipynb`.
-Do not move the notebook file to another directory before opening it.
-
-For one-line execution after extraction, run:
+Extract the archive keeping the top-level folder `FINAL-PROJECT/` intact:
 
 ```bash
-python run_submission.py
+python -m zipfile -e FINAL-PROJECT-SUBMISSION.zip .
+python FINAL-PROJECT/python/run_submission.py
 ```
 
-This launcher executes the notebook in place by calling Jupyter `nbconvert` for you.
+The launcher executes the notebook in place using Jupyter `nbconvert`.
 
-The notebook uses relative paths and expects enough headroom inside `FINAL-PROJECT/` to create and use sibling folders such as:
+The notebook uses relative paths and creates sibling folders during execution (`data/`, `figs/`, `results/`). Keep the folder structure intact — do not move the notebook before running.
 
-- `data/`
-- `figs/`
-- `results/`
-
-If the folder structure is preserved, the user should not need to be given any additional path instructions.
-
-After the first run has created the working folders, the notebook can also be run manually in the usual way, provided it remains inside the same `FINAL-PROJECT/python/` location.
-
-## Expected structure
-
-```text
-README.md
-run_submission.py
-FINAL-PROJECT/
-	python/
-		*.ipynb
-```
+After the first run, the notebook can also be opened and run manually from inside `FINAL-PROJECT/python/`.
 
 ## Notes
 
-- Keep the extracted folder structure unchanged.
-- `python run_submission.py` is the intended one-line execution path.
-- After the first run has created the working folders, the notebook can also be run manually in the usual way, provided it remains inside the same `FINAL-PROJECT/python/` location.
+- Run the two commands above from the directory where you extracted the zip.
+- The REPORT folder contains the written report in PDF and Word formats, and an HTML rendering of the executed notebook.
