@@ -567,4 +567,114 @@ After the first run has created these working folders, the notebook can also be 
   python run_submission.py
 \end{verbatim}
 
+\section{All Confusion Matrices}
+
+The figures below show confusion matrices for every feature configuration across all four runs.
+RUN 1 and RUN 2 are 3-class (negative, neutral, positive); RUN 3 and RUN 4 are binary (negative vs positive).
+Each matrix is normalised by true label so the diagonal shows recall per class.
+
+\subsection*{RUN 1 --- 3-class, Logistic Regression}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run1_unigrams_LR.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run1_bigrams_LR.png}
+  \caption{RUN 1 LR: unigrams (left), bigrams (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run1_uni+pos_LR.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run1_textstats_LR.png}
+  \caption{RUN 1 LR: unigrams+POS (left), text statistics (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run1_lexicon_LR.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run1_embeddings_LR.png}
+  \caption{RUN 1 LR: lexicon (left), embeddings (right)}
+\end{figure}
+
+\subsection*{RUN 2 --- 3-class, Decision Tree}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run2_unigrams_DT.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run2_bigrams_DT.png}
+  \caption{RUN 2 DT: unigrams (left), bigrams (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run2_uni+pos_DT.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run2_textstats_DT.png}
+  \caption{RUN 2 DT: unigrams+POS (left), text statistics (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run2_lexicon_DT.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run2_embeddings_DT.png}
+  \caption{RUN 2 DT: lexicon (left), embeddings (right)}
+\end{figure}
+
+\subsection*{RUN 3 --- binary, Logistic Regression}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run3_unigrams_LR.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run3_bigrams_LR.png}
+  \caption{RUN 3 LR: unigrams (left), bigrams (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run3_uni+pos_LR.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run3_textstats_LR.png}
+  \caption{RUN 3 LR: unigrams+POS (left), text statistics (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run3_lexicon_LR.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run3_embeddings_LR.png}
+  \caption{RUN 3 LR: lexicon (left), embeddings (right)}
+\end{figure}
+
+\subsection*{RUN 4 --- binary, Decision Tree}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run4_unigrams_DT.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run4_bigrams_DT.png}
+  \caption{RUN 4 DT: unigrams (left), bigrams (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run4_uni+pos_DT.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run4_textstats_DT.png}
+  \caption{RUN 4 DT: unigrams+POS (left), text statistics (right)}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.48\textwidth]{media/cm_run4_lexicon_DT.png}
+  \hfill
+  \includegraphics[width=0.48\textwidth]{media/cm_run4_embeddings_DT.png}
+  \caption{RUN 4 DT: lexicon (left), embeddings (right)}
+\end{figure}
+
 \end{document}
