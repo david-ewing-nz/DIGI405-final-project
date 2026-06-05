@@ -32,6 +32,15 @@ The notebook uses relative paths and creates sibling folders during execution (`
 
 After the first run, the notebook can also be opened and run manually from inside `FINAL-PROJECT/python/`.
 
+## Prerequisites
+
+- Python 3
+- Jupyter (`pip install notebook` or `pip install jupyterlab`)
+- nbconvert (`pip install nbconvert`)
+- Standard data science packages used in the notebook: `numpy`, `pandas`, `scikit-learn`, `matplotlib`, `nltk`, `gensim`
+
+On JupyterHub these are already available — no installation needed.
+
 ## Notes
 
 - Run the two commands above from the directory where you extracted the zip.
