@@ -9,11 +9,11 @@ FINAL-PROJECT-SUBMISSION.zip
 ├── README.md
 ├── FINAL-PROJECT/
 │   ├── python/
-│   │   ├── David-Ewing-82171165.ipynb        (notebook, outputs cleared)
-│   │   └── run_submission.py                 (one-line launcher)
+│   │   ├── David-Ewing-82171165.ipynb          (notebook, outputs cleared)
+│   │   └── run_submission.py                   (one-line launcher)
 │   └── REPORT/
-│       ├── David-Ewing-82171165.pdf          (compiled report, 20 pages)
-│       ├── David-Ewing-82171165-2K-WORDS.docx         (Word version of report)
+│       ├── David-Ewing-82171165.pdf            (compiled report, 20 pages)
+│       ├── David-Ewing-82171165-2K-WORDS.docx  (Word version of report)
 │       └── David-Ewing-82171165.executed.html  (executed notebook as HTML)
 ```
 
